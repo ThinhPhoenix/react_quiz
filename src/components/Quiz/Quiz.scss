@@ -1,0 +1,28 @@
+.quiz_cover {
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    height: 40vh;
+    padding: 12px;
+    justify-content: space-around;
+    align-items: left;
+    text-overflow: ellipsis;
+    margin :15px;
+    overflow-y: scroll;
+  }
+  .Q_no{
+    margin: 15px;
+  }
+ .Q_quest {
+    margin: 15px;
+    width: 50vw;
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+  }
+  
+  .toggles{
+    margin: 15px;
+    display:flex;
+    justify-content: baseline;
+    gap: 10px;
+  }
