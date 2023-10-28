@@ -19,15 +19,22 @@ export default function QuizScreen() {
       });
   }, []);
 
-  
+  // const testClick = () => {
+  //   let quizs = QuizFetch(data)
+  //   console.log(QuizFetch(data));
+  //   for(var i = 0; i < quizs.length; i++){
+  //        AnswerFetch(quizs, i)
+  //   }
+  // }
+
   return (
     <div className="content">
       <Timer />
       <div>{ctxDt.examCode}</div>
-      <Quiz isMultiple={false}/>
+      <Quiz isMultiple={false} />
       <div>
-      <button>Back</button>
-      <button>Next</button>
+        <button>Back</button>
+        <button>Next</button>
       </div>
     </div>
   );
