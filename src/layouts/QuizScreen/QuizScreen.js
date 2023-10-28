@@ -39,11 +39,13 @@ const goToPreviousQuiz = () => {
   console.log(`Back`);
 };
 
+let qNo = 1
+
 return (
   <div className="content">
     <Timer />
     <div>{ctxDt.examCode}</div>
-    <Quiz quizz={`48c9945c-c048-4cdc-99c3-249c4a320386`} />
+    <Quiz quizz={`48c9945c-c048-4cdc-99c3-249c4a320386`} qNo={qNo}/>
     <div>
       <button onClick={goToPreviousQuiz}>Back</button>
       <button onClick={goToNextQuiz}>Next</button>
