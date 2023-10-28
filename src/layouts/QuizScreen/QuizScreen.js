@@ -4,7 +4,6 @@ import "./QuizScreen.scss";
 import { ctx } from "../../CtxData";
 import Quiz from "../../components/Quiz/Quiz";
 import { Link } from "react-router-dom";
-import {QuizFetch} from "../../components/Utils/QuizFetch"
 
 export default function QuizScreen() {
   const [data, setdata] = useState({});
@@ -20,12 +19,7 @@ export default function QuizScreen() {
       });
   }, []);
 
-  const testClick = () => {
-    let quizs = QuizFetch(data) 
-    console.log(QuizFetch(data));
-    for(var i = 0; i < quizs.length; i++){
-    }
-  }
+  
   return (
     <div className="content">
       <Timer />
@@ -34,7 +28,6 @@ export default function QuizScreen() {
       <div>
       <button>Back</button>
       <button>Next</button>
-      <button onClick={testClick}>test</button>
       </div>
     </div>
   );
