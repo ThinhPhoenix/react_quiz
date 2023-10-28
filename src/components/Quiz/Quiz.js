@@ -38,10 +38,10 @@ export default function Quiz(props) {
     <div className="wrapper quiz_cover wrap-text">
       <h2 className="Q_no">{`Quiz ${qNo}/`}<code>{`${totalQuiz}`}</code></h2>
       <h3 className="Q_quest">Question: {thisQuiz.content}</h3>
-        {thisQuiz.answer.map((answer, index) => (
-          <div key={index} className="toggles">
-            <input type={type} name="ans" id={`ans${index}`} />
-            <label htmlFor={`ans${index}`}>{answer.content}</label>
+        {thisQuiz.answer.map((v, i) => (
+          <div key={i} className="toggles">
+            <input type={type} name="ans" id={`ans${i}`} />
+            <label htmlFor={`ans${i}`}>{v.content}</label>
           </div>
         ))}
     </div>
