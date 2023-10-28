@@ -28,18 +28,20 @@ export default function QuizScreen() {
   // }
 
 //test key: 48c9945c-c048-4cdc-99c3-249c4a320386
+let qNo = 1
 
 const goToNextQuiz = () => {
+  qNo = qNo + 1
   //if did current question -> change currentKey to next (index++) Đéo cho bỏ trống
-  console.log(`Next`);
+  console.log(`Next : ${qNo}`);
 };
 
 const goToPreviousQuiz = () => {
+  qNo = qNo - 1
   //change currentKey to before (index--)
-  console.log(`Back`);
+  console.log(`Back : ${qNo}`);
 };
 
-let qNo = 1
 
 return (
   <div className="content">
