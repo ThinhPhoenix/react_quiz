@@ -3,7 +3,7 @@ import Timer from "../../components/Timer/Timer";
 import "./QuizScreen.scss";
 import { ctx } from "../../CtxData";
 import Quiz from "../../components/Quiz/Quiz";
-import { Link } from "react-router-dom";
+
 
 export default function QuizScreen() {
   const [data, setdata] = useState({});
@@ -24,7 +24,7 @@ export default function QuizScreen() {
     <div className="content">
       <Timer />
       <div>{ctxDt.examCode}</div>
-      <Quiz isMultiple={false}/>
+      <Quiz quizz={`2ce23d6a-64ee-4ba8-8cd6-1fc1a0a09e79`}/>
       <div>
       <button>Back</button>
       <button>Next</button>

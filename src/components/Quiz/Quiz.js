@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import './Quiz.scss'
+import { ctx } from "../../CtxData";
 
 /**
  * !Not done yet. missing
@@ -9,28 +10,39 @@ import './Quiz.scss'
  * @returns a div with question and answer for user to choose
  */
 
-export default function Quiz({isMultiple}) {
-  let totalQuiz = 5, qNo = 1, ansNum = 4
-  let type = isMultiple ? `checkbox` : `radio`;
+export default function Quiz(props) {
+  const ctxDt = useContext(ctx);
+  const [data, setdata] = useState({});
+  
+  useEffect(() => {
+    const id = ctxDt.examCode;
+    fetch(`https://server.nglearns.com/quizz/${id}`)
+      .then((res) => res.json())
+      .then((dt) => {
+        setdata(dt);
+      });
+  }, []);
+
+  if (!data.lsQuizz) {
+    return null; // Handle loading state or error state
+  }
+
+  const thisQuiz = data.lsQuizz[props.quizz];
+  const totalQuiz = 5;
+  const qNo = 1;
+  const type = thisQuiz.isMultiple ? "checkbox" : "radio";
+
   return (
     <div className="wrapper quiz_cover wrap-text">
-        <h2 className="Q_no">{`Quiz ${qNo}/`}<code>{totalQuiz}</code></h2>
-        <h3 className="Q_quest">Question: Blabladahjkdshkjdsajhdhjghjhjgjhgjjkahdkjsjhakjhdjakhdjkahkjdahkjdhajskjkdhakjahskjahjdhasjkdhjkahdjsaksdjsabla.</h3>
+      <h2 className="Q_no">{`Quiz ${qNo}/${totalQuiz}`}</h2>
+      <h3 className="Q_quest">Question: {thisQuiz.content}</h3>
       <div className="toggles">
-        <input type={type} name="ans"/>
-        <label>Answer number 1</label>
-      </div>
-      <div className="toggles">
-        <input type={type} name="ans"/>
-        <label>Answer number 2</label>
-      </div>
-      <div className="toggles">
-        <input type={type} name="ans"/>
-        <label>Answer number 3</label>
-      </div>
-      <div className="toggles">
-        <input type={type} name="ans"/>
-        <label>Answer number 4</label>
+        {thisQuiz.answer.map((answer, index) => (
+          <div key={index}>
+            <input type={type} name="ans" id={`ans${index}`} />
+            <label htmlFor={`ans${index}`}>{answer.content}</label>
+          </div>
+        ))}
       </div>
     </div>
   );
