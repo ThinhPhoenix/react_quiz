@@ -7,10 +7,10 @@ import { ctx } from "../../CtxData";
  * @example <Quiz quizz={`2ce23d6a-64ee-4ba8-8cd6-1fc1a0a09e79`}/>
  * @returns a div with question and answer for user to choose
  * @author ThinhPhoenix - SE182929
- * @version 1.0.0.1
+ * @version 1.0.1.0
  */
 
-export default function Quiz(props) {
+export default function Quiz({quizz, qNo}) {
   const ctxDt = useContext(ctx);
   const [data, setdata] = useState({});
   
@@ -27,7 +27,7 @@ export default function Quiz(props) {
     return null; // Handle loading state or error state
   }
 
-  const thisQuiz = data.lsQuizz[props.quizz];
+  const thisQuiz = data.lsQuizz[quizz];
   const totalQuiz = Object.keys(data.lsQuizz).length;
   const type = thisQuiz.isMutiple ? "checkbox" : "radio";
   console.log(thisQuiz.isMutiple);
@@ -35,7 +35,7 @@ export default function Quiz(props) {
 
   return (
     <div className="wrapper quiz_cover wrap-text">
-      <h2 className="Q_no">{`Quiz ${props.qNo}/`}<code>{`${totalQuiz}`}</code></h2>
+      <h2 className="Q_no">{`Quiz ${qNo}/`}<code>{`${totalQuiz}`}</code></h2>
       <h3 className="Q_quest">Question: {thisQuiz.content}</h3>
         {thisQuiz.answer.map((v, i) => (
           <div key={i} className="toggles">
