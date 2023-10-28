@@ -3,11 +3,11 @@ import './Quiz.scss'
 import { ctx } from "../../CtxData";
 
 /**
- * !Not done yet. missing
- * !for loops to check how many e in array and return that many div (class`toggles`)
- * !change isMultiple into json Quizz
- * @param {json quiz} json 
+ * @param string enter the key of element inside lsQuizz array
+ * @example <Quiz quizz={`2ce23d6a-64ee-4ba8-8cd6-1fc1a0a09e79`}/>
  * @returns a div with question and answer for user to choose
+ * @author ThinhPhoenix - SE182929
+ * @version 1.0.0.0
  */
 
 export default function Quiz(props) {
@@ -28,22 +28,22 @@ export default function Quiz(props) {
   }
 
   const thisQuiz = data.lsQuizz[props.quizz];
-  const totalQuiz = 5;
+  const totalQuiz = Object.keys(data.lsQuizz).length;
   const qNo = 1;
-  const type = thisQuiz.isMultiple ? "checkbox" : "radio";
+  const type = thisQuiz.isMutiple ? "checkbox" : "radio";
+  console.log(thisQuiz.isMutiple);
+  console.log(type);
 
   return (
     <div className="wrapper quiz_cover wrap-text">
-      <h2 className="Q_no">{`Quiz ${qNo}/${totalQuiz}`}</h2>
+      <h2 className="Q_no">{`Quiz ${qNo}/`}<code>{`${totalQuiz}`}</code></h2>
       <h3 className="Q_quest">Question: {thisQuiz.content}</h3>
-      <div className="toggles">
         {thisQuiz.answer.map((answer, index) => (
-          <div key={index}>
+          <div key={index} className="toggles">
             <input type={type} name="ans" id={`ans${index}`} />
             <label htmlFor={`ans${index}`}>{answer.content}</label>
           </div>
         ))}
-      </div>
     </div>
   );
 }

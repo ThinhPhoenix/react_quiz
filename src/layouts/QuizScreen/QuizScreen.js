@@ -7,6 +7,7 @@ import Quiz from "../../components/Quiz/Quiz";
 export default function QuizScreen() {
   const [data, setdata] = useState({});
   const ctxDt = useContext(ctx);
+  const [currentQuiz, setCurQuiz] = useState(``);
 
   useEffect(() => {
     let id = ctxDt.examCode;
@@ -26,15 +27,27 @@ export default function QuizScreen() {
   //   }
   // }
 
-  return (
-    <div className="content">
-      <Timer />
-      <div>{ctxDt.examCode}</div>
-      <Quiz quizz={`2ce23d6a-64ee-4ba8-8cd6-1fc1a0a09e79`}/>
-      <div>
-        <button>Back</button>
-        <button>Next</button>
-      </div>
+//test key: 48c9945c-c048-4cdc-99c3-249c4a320386
+
+const goToNextQuiz = () => {
+  //if did current question -> change currentKey to next (index++) Đéo cho bỏ trống
+  console.log(`Next`);
+};
+
+const goToPreviousQuiz = () => {
+  //change currentKey to before (index--)
+  console.log(`Back`);
+};
+
+return (
+  <div className="content">
+    <Timer />
+    <div>{ctxDt.examCode}</div>
+    <Quiz quizz={`48c9945c-c048-4cdc-99c3-249c4a320386`} />
+    <div>
+      <button onClick={goToPreviousQuiz}>Back</button>
+      <button onClick={goToNextQuiz}>Next</button>
     </div>
-  );
+  </div>
+);
 }
