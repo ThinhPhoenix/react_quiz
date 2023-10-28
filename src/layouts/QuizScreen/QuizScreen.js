@@ -28,7 +28,6 @@ export default function QuizScreen() {
   // }
 
 //test key: 48c9945c-c048-4cdc-99c3-249c4a320386
-console.log(Object.keys(data.lsQuizz).length);
 
 const goToNextQuiz = () => {
   //if did current question -> change currentKey to next (index++) Đéo cho bỏ trống
