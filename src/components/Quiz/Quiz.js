@@ -9,10 +9,13 @@ import { ctx } from "../../CtxData";
  * @author ThinhPhoenix - SE182929
  * @version 1.0.2.0
  */
+
 export default function Quiz(props) {
   const ctxDt = useContext(ctx);
   const [data, setdata] = useState({});
-  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
+  const [user, setUser] = useState(""); // State for the user
+  const quizStorageKey = `${ctxDt.user}_${ctxDt.examCode}_${props.quizz}`; // Unique key for each quiz
 
   useEffect(() => {
     const id = ctxDt.examCode;
@@ -21,47 +24,61 @@ export default function Quiz(props) {
       .then((dt) => {
         setdata(dt);
       });
+    // Load user from local storage
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(storedUser);
+    }
   }, []);
 
+  useEffect(() => {
+    // Load previously selected answers from local storage for this quiz
+    const storedUserDataJSON = localStorage.getItem(quizStorageKey);
+    if (storedUserDataJSON) {
+      const storedUserData = JSON.parse(storedUserDataJSON);
+      setSelectedAnswers(storedUserData.answer);
+    }
+  }, [quizStorageKey]);
+
   if (!data.lsQuizz) {
-    return null; // Handle loading state or error state
+    return null;
   }
 
   const thisQuiz = data.lsQuizz[props.quizz];
   const totalQuiz = Object.keys(data.lsQuizz).length;
   const isMultipleChoice = thisQuiz.isMutiple;
 
-  // Function to handle selecting answers
   const handleAnswerSelect = (answerId) => {
-    const selected = selectedAnswers[props.quizz] || [];
-    
+    const selected = [...selectedAnswers];
+
     if (isMultipleChoice) {
-      // For multiple-choice, toggle the selection
       if (selected.includes(answerId)) {
         const newSelected = selected.filter((id) => id !== answerId);
-        setSelectedAnswers({
-          ...selectedAnswers,
-          [props.quizz]: newSelected,
-        });
+        setSelectedAnswers(newSelected);
       } else {
-        setSelectedAnswers({
-          ...selectedAnswers,
-          [props.quizz]: [...selected, answerId],
-        });
+        setSelectedAnswers([...selected, answerId]);
       }
     } else {
-      // For single-choice, set the selected answer
-      setSelectedAnswers({
-        ...selectedAnswers,
-        [props.quizz]: [answerId],
-      });
+      setSelectedAnswers([answerId]);
     }
+
+    // Update local storage with the new answer selections and user data for this quiz
+    const userData = {
+      user: ctxDt.user,
+      examCode: ctxDt.examCode,
+      quizz: props.quizz,
+      answer: isMultipleChoice ? selected : [answerId],
+    };
+
+    const userDataJSON = JSON.stringify(userData);
+    localStorage.setItem(quizStorageKey, userDataJSON);
   };
 
   return (
     <div className="wrapper quiz_cover wrap-text">
       <div className="qNoWrapper">
-        <h2 className="Q_no">{`Quiz ${props.qNo}`}</h2><h4><code>{`/${totalQuiz}`}</code></h4>
+        <h2 className="Q_no">{`Quiz ${props.qNo}`}</h2>
+        <h4><code>{`/${totalQuiz}`}</code></h4>
       </div>
       <h3 className="Q_quest">Question: {thisQuiz.content}</h3>
       {thisQuiz.answer.map((v, i) => (
@@ -70,7 +87,7 @@ export default function Quiz(props) {
             type={isMultipleChoice ? "checkbox" : "radio"}
             name={props.quizz}
             id={v.id}
-            checked={(selectedAnswers[props.quizz] || []).includes(v.id)}
+            checked={selectedAnswers.includes(v.id)}
             onChange={() => handleAnswerSelect(v.id)}
           />
           <label htmlFor={`ans${i}`}>{v.content}</label>
