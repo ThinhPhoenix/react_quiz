@@ -13,9 +13,9 @@ import { ctx } from "../../CtxData";
 export default function Quiz(props) {
   const ctxDt = useContext(ctx);
   const [data, setdata] = useState({});
-  const [selectedAnswers, setSelectedAnswers] = useState([]);
+  const [selectedAnswers, setSelectedAnswers] = useState([]); // Ensure selectedAnswers is initialized as an empty array
   const [user, setUser] = useState(""); // State for the user
-  const quizStorageKey = `${ctxDt.user}_${ctxDt.examCode}_${props.quizz}`; // Unique key for each quiz
+  const quizStorageKey = `${ctxDt.user}_${ctxDt.examCode}_${props.quizz}`;
 
   useEffect(() => {
     const id = ctxDt.examCode;
@@ -24,7 +24,7 @@ export default function Quiz(props) {
       .then((dt) => {
         setdata(dt);
       });
-    // Load user from local storage
+
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(storedUser);
@@ -32,11 +32,14 @@ export default function Quiz(props) {
   }, []);
 
   useEffect(() => {
-    // Load previously selected answers from local storage for this quiz
     const storedUserDataJSON = localStorage.getItem(quizStorageKey);
     if (storedUserDataJSON) {
       const storedUserData = JSON.parse(storedUserDataJSON);
-      setSelectedAnswers(storedUserData.answer);
+      const savedAnswers = storedUserData.lsAns[props.quizz]?.choice;
+      // Check if savedAnswers is an array before setting it
+      if (Array.isArray(savedAnswers)) {
+        setSelectedAnswers(savedAnswers);
+      }
     }
   }, [quizStorageKey]);
 
@@ -46,7 +49,8 @@ export default function Quiz(props) {
 
   const thisQuiz = data.lsQuizz[props.quizz];
   const totalQuiz = Object.keys(data.lsQuizz).length;
-  const isMultipleChoice = thisQuiz.isMutiple; // Fixed a typo here (isMutiple -> isMultiple)
+  const isMultipleChoice = thisQuiz.isMutiple;
+
   const handleAnswerSelect = (answerId) => {
     setSelectedAnswers((prevSelectedAnswers) => {
       let updatedAnswers;
@@ -60,15 +64,24 @@ export default function Quiz(props) {
         updatedAnswers = [answerId];
       }
   
-      // Update local storage with the new selected answers
-      const userData = {
-        answer: updatedAnswers,
+      // Update the lsAns array in userQuizData
+      const userQuizData = {
+        quizzId: props.quizz,
+        user: ctxDt.user,
+        lsAns: {
+          [props.quizz]: {
+            id: props.quizz,
+            choice: updatedAnswers,
+          },
+        },
       };
-      localStorage.setItem(quizStorageKey, JSON.stringify(userData));
+  
+      localStorage.setItem(quizStorageKey, JSON.stringify(userQuizData));
   
       return updatedAnswers;
     });
   };
+  
 
   return (
     <div className="wrapper quiz_cover wrap-text">

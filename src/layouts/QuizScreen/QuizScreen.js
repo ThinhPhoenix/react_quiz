@@ -3,8 +3,10 @@ import Timer from "../../components/Timer/Timer";
 import "./QuizScreen.scss";
 import { ctx } from "../../CtxData";
 import Quiz from "../../components/Quiz/Quiz";
+import { useNavigate } from "react-router-dom";
 
 export default function QuizScreen() {
+  const nav = useNavigate()
   const [state, setState] = useState(0);
   const [data, setData] = useState({});
   const ctxDt = useContext(ctx);
@@ -49,9 +51,13 @@ export default function QuizScreen() {
     console.log(`Back : ${qNo}`);
   };
 
+  const submithandle = () => () => {
+    nav(`/submit/${ctxDt.examCode}`)
+  }
+
   return (
     <div className="content">
-      <Timer />
+      <Timer user={ctxDt.user} />
       <div>
         {ctxDt.user} joined {ctxDt.examCode}
       </div>
@@ -67,7 +73,7 @@ export default function QuizScreen() {
           <button onClick={goToPreviousQuiz}>Back</button>
         )}
         {state > 0 && qNo >= Object.keys(data.lsQuizz).length ? (
-          <button>Submit</button>
+          <button onClick={submithandle()}>Submit</button>
         ) : (
           <button onClick={goToNextQuiz}>Next</button>
         )}

@@ -1,24 +1,29 @@
-.join_hub {
+.join_submit {
     display: flex;
     justify-content: center; /* Horizontally center the container */
     align-items: center; /* Vertically center the container */
     height: 100vh; /* 100% of the viewport height */
     margin: 0; /* Remove default margin to ensure full width */
     flex-direction: column;
+    
 
-    .join_quiz {
+    .submit {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      justify-content: center;
       align-items: center;
       gap: 10px;
       padding: 20px;
+      margin-bottom: 15px;
+      width: 35em;
   
       input{
           width: 20em;
       }
-      
-      #join_button{
+
+      #mainbutton{
         width: 9em;
+        padding-top: 15px;
       }
     }
   }
