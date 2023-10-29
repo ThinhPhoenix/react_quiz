@@ -29,6 +29,16 @@ export default function QuizScreen() {
     }
   }, [state, data, qNo]);
 
+  useEffect(() => {
+    // Check if user data is in local storage and set it if found
+    const storedUserDataJSON = localStorage.getItem('user');
+    if (storedUserDataJSON) {
+      const storedUserData = JSON.parse(storedUserDataJSON);
+      ctxDt.SetUser(storedUserData.user);
+      ctxDt.SetExamCode(storedUserData.examCode);
+    }
+  }, []);
+
   const goToNextQuiz = () => {
     setQNo(qNo + 1);
     console.log(`Next : ${qNo}`);
@@ -48,10 +58,10 @@ export default function QuizScreen() {
       {state > 0 ? (
         <Quiz quizz={currentQuiz} qNo={qNo} />
       ) : (
-        <div>There is no data of this quiz</div>
+        <div>There is no data for this quiz</div>
       )}
       <div>
-        {state > 0 && qNo == 1 ? (
+        {state > 0 && qNo === 1 ? (
           <button disabled>Back</button>
         ) : (
           <button onClick={goToPreviousQuiz}>Back</button>
