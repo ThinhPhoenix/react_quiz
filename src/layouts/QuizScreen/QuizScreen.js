@@ -4,6 +4,7 @@ import "./QuizScreen.scss";
 import { ctx } from "../../CtxData";
 import Quiz from "../../components/Quiz/Quiz";
 import { useNavigate } from "react-router-dom";
+import { QuizFetch } from "../../components/Utils/QuizFetch";
 
 export default function QuizScreen() {
   const nav = useNavigate()
@@ -11,6 +12,7 @@ export default function QuizScreen() {
   const [data, setData] = useState({});
   const ctxDt = useContext(ctx);
   const [currentQuiz, setCurrentQuiz] = useState("");
+  const [quizKey, setquizKey] = useState([]);
   const [qNo, setQNo] = useState(1);
 
   useEffect(() => {
@@ -19,14 +21,15 @@ export default function QuizScreen() {
       .then((res) => res.json())
       .then((dt) => {
         setData(dt);
-        console.log(dt);
         setState(state + 1);
+        setquizKey(QuizFetch(dt))
+        ctxDt.SetQuiz(dt)
       });
   }, [ctxDt.examCode]);
 
   useEffect(() => {
     if (state === 1 && data && data.lsQuizz) {
-      const newCurrentQuiz = Object.keys(data.lsQuizz)[qNo - 1];
+      const newCurrentQuiz = quizKey[qNo - 1];
       setCurrentQuiz(newCurrentQuiz);
     }
   }, [state, data, qNo]);
