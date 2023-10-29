@@ -5,7 +5,7 @@ import { ctx } from "../../CtxData";
 import Quiz from "../../components/Quiz/Quiz";
 
 export default function QuizScreen() {
-  let totalQuiz
+  let totalQuiz;
   const [state, setState] = useState(0);
   const [data, setData] = useState({});
   const ctxDt = useContext(ctx);
@@ -27,7 +27,8 @@ export default function QuizScreen() {
     if (state === 1 && data && data.lsQuizz) {
       const newCurrentQuiz = Object.keys(data.lsQuizz)[qNo - 1];
       setCurrentQuiz(newCurrentQuiz);
-      totalQuiz = Object.keys(data.lsQuizz).length
+      totalQuiz = Object.keys(data.lsQuizz).length;
+      console.log(totalQuiz);
     }
   }, [state, data, qNo]);
 
@@ -45,16 +46,24 @@ export default function QuizScreen() {
     <div className="content">
       <Timer />
       <div>
-        {ctxDt.examCode}
+        {ctxDt.examCode} state{state}
       </div>
       {state > 0 ? (
-        <Quiz quizz={currentQuiz} qNo={qNo} data={data} />
+        <Quiz quizz={currentQuiz} qNo={qNo} />
       ) : (
         <div>There is no data of this quiz</div>
       )}
       <div>
-        <button onClick={goToPreviousQuiz}>Back</button>
-        <button onClick={goToNextQuiz}>Next</button>
+        {state > 0 && qNo == 1 ? (
+          <button disabled>Back</button>
+        ) : (
+          <button onClick={goToPreviousQuiz}>Back</button>
+        )}
+        {state > 0 && qNo >= Object.keys(data.lsQuizz).length ? (
+          <button>Submit</button>
+        ) : (
+          <button onClick={goToNextQuiz}>Next</button>
+        )}
       </div>
     </div>
   );
