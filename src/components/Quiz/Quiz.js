@@ -49,30 +49,30 @@ export default function Quiz(props) {
   const isMultipleChoice = thisQuiz.isMutiple;
 
   const handleAnswerSelect = (answerId) => {
-    const selected = [...selectedAnswers];
-
-    if (isMultipleChoice) {
-      if (selected.includes(answerId)) {
-        const newSelected = selected.filter((id) => id !== answerId);
-        setSelectedAnswers(newSelected);
+    setSelectedAnswers((prevSelectedAnswers) => {
+      if (isMultipleChoice) {
+        if (prevSelectedAnswers.includes(answerId)) {
+          return prevSelectedAnswers.filter((id) => id !== answerId);
+        } else {
+          return [...prevSelectedAnswers, answerId];
+        }
       } else {
-        setSelectedAnswers([...selected, answerId]);
+        return [answerId];
       }
-    } else {
-      setSelectedAnswers([answerId]);
-    }
-
+    });
+  
     // Update local storage with the new answer selections and user data for this quiz
     const userData = {
       user: ctxDt.user,
       examCode: ctxDt.examCode,
       quizz: props.quizz,
-      answer: isMultipleChoice ? selected : [answerId],
+      answer: isMultipleChoice ? selectedAnswers : [answerId],
     };
-
+  
     const userDataJSON = JSON.stringify(userData);
     localStorage.setItem(quizStorageKey, userDataJSON);
   };
+  
 
   return (
     <div className="wrapper quiz_cover wrap-text">
