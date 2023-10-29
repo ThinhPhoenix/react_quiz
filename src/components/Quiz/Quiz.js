@@ -49,17 +49,18 @@ export default function Quiz(props) {
   const isMultipleChoice = thisQuiz.isMutiple;
 
   const handleAnswerSelect = (answerId) => {
-    setSelectedAnswers((prevSelectedAnswers) => {
-      if (isMultipleChoice) {
-        if (prevSelectedAnswers.includes(answerId)) {
-          return prevSelectedAnswers.filter((id) => id !== answerId);
-        } else {
-          return [...prevSelectedAnswers, answerId];
-        }
+  setSelectedAnswers((prevSelectedAnswers) => {
+    if (isMultipleChoice) {
+      if (prevSelectedAnswers.includes(answerId)) {
+        return prevSelectedAnswers.filter((id) => id !== answerId);
       } else {
-        return [answerId];
+        return [...prevSelectedAnswers, answerId];
       }
-    });
+    } else {
+      return [answerId];
+    }
+  });
+};
   
     // Update local storage with the new answer selections and user data for this quiz
     const userData = {
@@ -84,12 +85,12 @@ export default function Quiz(props) {
       {thisQuiz.answer.map((v, i) => (
         <div key={i} className="toggles">
           <input
-            type={isMultipleChoice ? "checkbox" : "radio"}
-            name={props.quizz}
-            id={v.id}
-            checked={selectedAnswers.includes(v.id)}
-            onChange={() => handleAnswerSelect(v.id)}
-          />
+  type={isMultipleChoice ? "checkbox" : "radio"}
+  name={props.quizz}
+  id={v.id}
+  checked={selectedAnswers.includes(v.id)}
+  onChange={() => handleAnswerSelect(v.id)}
+/>
           <label htmlFor={`ans${i}`}>{v.content}</label>
         </div>
       ))}
