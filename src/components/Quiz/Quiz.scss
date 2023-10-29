@@ -25,3 +25,13 @@
     justify-content: baseline;
     gap: 10px;
   }
+
+  .qNoWrapper{
+    display: flex;
+    flex-direction: row;
+
+    h4{
+      margin-left: -10px;
+      margin-bottom: 0px;
+    }
+  }
