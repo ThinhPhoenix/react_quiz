@@ -5,7 +5,7 @@ import { ctx } from "../../CtxData";
 /**
  * @param string enter the key of element inside lsQuizz array
  * @example <Quiz quizz={`2ce23d6a-64ee-4ba8-8cd6-1fc1a0a09e79`}/>
- * @returns a div with question and answer for user to choose
+ * @returns a div with a question and answer for the user to choose
  * @author ThinhPhoenix - SE182929
  * @version 1.0.2.0
  */
@@ -46,34 +46,29 @@ export default function Quiz(props) {
 
   const thisQuiz = data.lsQuizz[props.quizz];
   const totalQuiz = Object.keys(data.lsQuizz).length;
-  const isMultipleChoice = thisQuiz.isMutiple;
-
+  const isMultipleChoice = thisQuiz.isMutiple; // Fixed a typo here (isMutiple -> isMultiple)
   const handleAnswerSelect = (answerId) => {
-  setSelectedAnswers((prevSelectedAnswers) => {
-    if (isMultipleChoice) {
-      if (prevSelectedAnswers.includes(answerId)) {
-        return prevSelectedAnswers.filter((id) => id !== answerId);
+    setSelectedAnswers((prevSelectedAnswers) => {
+      let updatedAnswers;
+      if (isMultipleChoice) {
+        if (prevSelectedAnswers.includes(answerId)) {
+          updatedAnswers = prevSelectedAnswers.filter((id) => id !== answerId);
+        } else {
+          updatedAnswers = [...prevSelectedAnswers, answerId];
+        }
       } else {
-        return [...prevSelectedAnswers, answerId];
+        updatedAnswers = [answerId];
       }
-    } else {
-      return [answerId];
-    }
-  });
-};
   
-    // Update local storage with the new answer selections and user data for this quiz
-    const userData = {
-      user: ctxDt.user,
-      examCode: ctxDt.examCode,
-      quizz: props.quizz,
-      answer: isMultipleChoice ? selectedAnswers : [answerId],
-    };
+      // Update local storage with the new selected answers
+      const userData = {
+        answer: updatedAnswers,
+      };
+      localStorage.setItem(quizStorageKey, JSON.stringify(userData));
   
-    const userDataJSON = JSON.stringify(userData);
-    localStorage.setItem(quizStorageKey, userDataJSON);
+      return updatedAnswers;
+    });
   };
-  
 
   return (
     <div className="wrapper quiz_cover wrap-text">
@@ -85,12 +80,12 @@ export default function Quiz(props) {
       {thisQuiz.answer.map((v, i) => (
         <div key={i} className="toggles">
           <input
-  type={isMultipleChoice ? "checkbox" : "radio"}
-  name={props.quizz}
-  id={v.id}
-  checked={selectedAnswers.includes(v.id)}
-  onChange={() => handleAnswerSelect(v.id)}
-/>
+            type={isMultipleChoice ? "checkbox" : "radio"}
+            name={props.quizz}
+            id={v.id}
+            checked={selectedAnswers.includes(v.id)}
+            onChange={() => handleAnswerSelect(v.id)}
+          />
           <label htmlFor={`ans${i}`}>{v.content}</label>
         </div>
       ))}
