@@ -5,7 +5,6 @@ import { ctx } from "../../CtxData";
 import Quiz from "../../components/Quiz/Quiz";
 
 export default function QuizScreen() {
-  let totalQuiz;
   const [state, setState] = useState(0);
   const [data, setData] = useState({});
   const ctxDt = useContext(ctx);
@@ -27,8 +26,6 @@ export default function QuizScreen() {
     if (state === 1 && data && data.lsQuizz) {
       const newCurrentQuiz = Object.keys(data.lsQuizz)[qNo - 1];
       setCurrentQuiz(newCurrentQuiz);
-      totalQuiz = Object.keys(data.lsQuizz).length;
-      console.log(totalQuiz);
     }
   }, [state, data, qNo]);
 
