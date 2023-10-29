@@ -3,11 +3,12 @@ import Timer from "../../components/Timer/Timer";
 import "./QuizScreen.scss";
 import { ctx } from "../../CtxData";
 import Quiz from "../../components/Quiz/Quiz";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { QuizFetch } from "../../components/Utils/QuizFetch";
 
 export default function QuizScreen() {
-  const nav = useNavigate()
+  const nav = useNavigate();
+  const param = useParams();
   const [state, setState] = useState(0);
   const [data, setData] = useState({});
   const ctxDt = useContext(ctx);
@@ -16,17 +17,21 @@ export default function QuizScreen() {
   const [qNo, setQNo] = useState(1);
 
   useEffect(() => {
-    let id = ctxDt.examCode;
+    let id = param.id;
+
+    ctxDt.SetExamCode(id);
+    ctxDt.SetUser(param.username);
+
+    console.log(ctxDt);
     fetch(`https://server.nglearns.com/quizz/${id}`)
       .then((res) => res.json())
       .then((dt) => {
         setData(dt);
         setState(state + 1);
-        setquizKey(QuizFetch(dt))
-        ctxDt.SetQuiz(dt)
+        setquizKey(QuizFetch(dt));
+        ctxDt.SetQuiz(dt);
       });
-  }, [ctxDt.examCode]);
-
+  }, []);
   useEffect(() => {
     if (state === 1 && data && data.lsQuizz) {
       const newCurrentQuiz = quizKey[qNo - 1];
@@ -36,7 +41,7 @@ export default function QuizScreen() {
 
   useEffect(() => {
     // Check if user data is in local storage and set it if found
-    const storedUserDataJSON = localStorage.getItem('user');
+    const storedUserDataJSON = localStorage.getItem("user");
     if (storedUserDataJSON) {
       const storedUserData = JSON.parse(storedUserDataJSON);
       ctxDt.SetUser(storedUserData.user);
@@ -55,14 +60,14 @@ export default function QuizScreen() {
   };
 
   const submithandle = () => () => {
-    nav(`/submit/${ctxDt.examCode}`)
-  }
+    nav(`/submit/${ctxDt.examCode}`);
+  };
 
   return (
     <div className="content">
       <Timer user={ctxDt.user} />
       <div>
-        {ctxDt.user} joined {ctxDt.examCode}
+        {ctxDt.user} joined {ctxDt.Quiz.title}
       </div>
       {state > 0 ? (
         <Quiz quizz={currentQuiz} qNo={qNo} />

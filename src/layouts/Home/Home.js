@@ -20,7 +20,7 @@ export default function Home() {
     if (examCode && username) {
       ctxDt.SetExamCode(examCode)
       ctxDt.SetUser(username)
-      nav(`/quiz/${examCode}`);
+      nav(`/quiz/${examCode}/${username}`);
     }
   };
 
