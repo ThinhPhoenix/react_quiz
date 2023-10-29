@@ -5,53 +5,57 @@ import { ctx } from "../../CtxData";
 import Quiz from "../../components/Quiz/Quiz";
 
 export default function QuizScreen() {
-  const [data, setdata] = useState({});
+  let totalQuiz
+  const [state, setState] = useState(0);
+  const [data, setData] = useState({});
   const ctxDt = useContext(ctx);
-  const [currentQuiz, setCurQuiz] = useState(``);
+  const [currentQuiz, setCurrentQuiz] = useState("");
+  const [qNo, setQNo] = useState(1);
 
   useEffect(() => {
     let id = ctxDt.examCode;
     fetch(`https://server.nglearns.com/quizz/${id}`)
       .then((res) => res.json())
       .then((dt) => {
-        setdata(dt);
+        setData(dt);
         console.log(dt);
+        setState(state + 1);
       });
-  }, []);
+  }, [ctxDt.examCode]);
 
-  // const testClick = () => {
-  //   let quizs = QuizFetch(data)
-  //   console.log(QuizFetch(data));
-  //   for(var i = 0; i < quizs.length; i++){
-  //        console.log(answerFetch(quizs, i))
-  //   }
-  // }
+  useEffect(() => {
+    if (state === 1 && data && data.lsQuizz) {
+      const newCurrentQuiz = Object.keys(data.lsQuizz)[qNo - 1];
+      setCurrentQuiz(newCurrentQuiz);
+      totalQuiz = Object.keys(data.lsQuizz).length
+    }
+  }, [state, data, qNo]);
 
-//test key: 48c9945c-c048-4cdc-99c3-249c4a320386
-let qNo = 1
+  const goToNextQuiz = () => {
+    setQNo(qNo + 1);
+    console.log(`Next : ${qNo}`);
+  };
 
-const goToNextQuiz = () => {
-  qNo = qNo + 1
-  //if did current question -> change currentKey to next (index++) Đéo cho bỏ trống
-  console.log(`Next : ${qNo}`);
-};
+  const goToPreviousQuiz = () => {
+    setQNo(qNo - 1);
+    console.log(`Back : ${qNo}`);
+  };
 
-const goToPreviousQuiz = () => {
-  qNo = qNo - 1
-  //change currentKey to before (index--)
-  console.log(`Back : ${qNo}`);
-};
-
-
-return (
-  <div className="content">
-    <Timer />
-    <div>{ctxDt.examCode}</div>
-    <Quiz quizz={`48c9945c-c048-4cdc-99c3-249c4a320386`} qNo={qNo}/>
-    <div>
-      <button onClick={goToPreviousQuiz}>Back</button>
-      <button onClick={goToNextQuiz}>Next</button>
+  return (
+    <div className="content">
+      <Timer />
+      <div>
+        {ctxDt.examCode} - {state}
+      </div>
+      {state > 0 ? (
+        <Quiz quizz={currentQuiz} qNo={qNo} data={data} />
+      ) : (
+        <div>There is no data of this quiz</div>
+      )}
+      <div>
+        <button onClick={goToPreviousQuiz}>Back</button>
+        <button onClick={goToNextQuiz}>Next</button>
+      </div>
     </div>
-  </div>
-);
+  );
 }
