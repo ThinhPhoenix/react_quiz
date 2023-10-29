@@ -19,6 +19,7 @@ export default function Home() {
   const joinQuiz = () => {
     if (examCode && username) {
       ctxDt.SetExamCode(examCode)
+      ctxDt.SetUser(username)
       nav(`/quiz/${examCode}`);
     }
   };
