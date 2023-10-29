@@ -66,7 +66,6 @@ export default function Quiz(props) {
   
       // Update the lsAns array in userQuizData
       const userQuizData = {
-        quizzId: props.quizz,
         user: ctxDt.user,
         lsAns: {
           [props.quizz]: {
