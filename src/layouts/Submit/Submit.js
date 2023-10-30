@@ -7,18 +7,28 @@ export default function Submit() {
   const nav = useNavigate();
   const ctxDt = useContext(ctx);
   const userExamKey = `${ctxDt.user}_${ctxDt.examCode}`;
-  const storedSelectedJSON = localStorage.getItem(`${userExamKey}_2ce23d6a-64ee-4ba8-8cd6-1fc1a0a09e79`);
-  const storedSelected = JSON.parse(storedSelectedJSON);
+  const lsQuizId = Object.keys(ctxDt.Quiz.lsQuizz);
 
   // Retrieve the time remaining from local storage
   const storedTimeRemaining = localStorage.getItem(
     `${ctxDt.user}_timeRemaining_${ctxDt.examCode}`
   );
 
-  // Debugging: Check the content of storedSelected
+  // Create an object to store data for all quizzes
+  const allQuizData = {};
+
+  // Iterate through lsQuizId and fetch data for each quiz
+  lsQuizId.forEach((quizId) => {
+    const quizDataKey = `${userExamKey}_${quizId}`;
+    const quizDataJSON = localStorage.getItem(quizDataKey);
+    const quizData = JSON.parse(quizDataJSON);
+    allQuizData[quizId] = quizData;
+  });
+
+  // Debugging: Check the content of allQuizData
   useEffect(() => {
-    console.log("storedSelected:", storedSelected);
-  }, [storedSelected]);
+    console.log("allQuizData:", allQuizData);
+  }, [allQuizData]);
 
   // Convert the stored time remaining (in seconds) to a number
   const storedTimeRemainingInSeconds = parseInt(storedTimeRemaining, 10);
@@ -39,17 +49,22 @@ export default function Submit() {
       <button onClick={() => nav("/")}>Back to main</button>
       <div>
         Debugging:
-        {storedSelected.lsAns && (
-          <div>
-            {`${storedSelected.user}`}'s Choices:
-            {Object.keys(storedSelected.lsAns).map((quizId) => (
-              <div key={quizId}>
-                Quiz ID: {quizId} <br/>
-                Choices: {storedSelected.lsAns[quizId].choice.join(", ")}
+        {Object.keys(allQuizData).map((quizId) => (
+          <div key={quizId}>
+            Quiz ID: {quizId}
+            {allQuizData[quizId].lsAns && (
+              <div>
+                {`${allQuizData[quizId].user}`}'s Choices:
+                {Object.keys(allQuizData[quizId].lsAns).map((quizId) => (
+                  <div key={quizId}>
+                    Quiz ID: {quizId} <br/>
+                    Choices: {allQuizData[quizId].lsAns[quizId].choice.join(", ")}
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
