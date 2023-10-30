@@ -71,5 +71,5 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 # react_quiz
 
-thinhlcse182929@fpt.edu.vn
-phienntse182962@fpt.edu.vn
+# thinhlcse182929@fpt.edu.vn
+# phienntse182962@fpt.edu.vn
