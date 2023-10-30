@@ -6,7 +6,7 @@ export default function Timer({ user }) {
     const nav = useNavigate();
     const ctxDt = useContext(ctx);
     const localStorageKey = `${user}_timeRemaining_${ctxDt.examCode}`; // Unique key for each user
-    const [timeRemaining, setTimeRemaining] = useState(0.2 * 60); // 12 minutes in seconds
+    const [timeRemaining, setTimeRemaining] = useState(60 * 60); // 12 minutes in seconds
     const [timerExpired, setTimerExpired] = useState(false);
 
     // Load time remaining from local storage

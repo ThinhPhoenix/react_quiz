@@ -81,7 +81,7 @@ export default function QuizScreen() {
           <button onClick={goToPreviousQuiz}>Back</button>
         )}
         {state > 0 && qNo >= Object.keys(data.lsQuizz).length ? (
-          <button onClick={submithandle()}>Submit</button>
+          <button className='dark' onClick={submithandle()}>Submit</button>
         ) : (
           <button onClick={goToNextQuiz}>Next</button>
         )}
