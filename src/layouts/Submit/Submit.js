@@ -51,7 +51,7 @@ export default function Submit() {
     // Save the converted data in the required format to local storage (if needed)
     localStorage.setItem("convertedData", JSON.stringify(convertedData));
 
-    fetch("https://server.nglearns.com/answer/285498f5-3486-434d-a459-bedb6bcea7ce", {
+    fetch(`https://server.nglearns.com/answer/${ctxDt.examCode}`, {
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
