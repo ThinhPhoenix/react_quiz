@@ -4,7 +4,7 @@ import { ctx } from "../../CtxData";
 import "./Submit.scss";
 
 export default function Submit() {
-  let debug = true;
+  let debug = false;
   const [score, setScore] = useState(0);
   const nav = useNavigate();
   const ctxDt = useContext(ctx);
