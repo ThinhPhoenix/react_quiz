@@ -16,6 +16,10 @@ export default function QuizScreen() {
   const [quizKey, setquizKey] = useState([]);
   const [qNo, setQNo] = useState(1);
 
+  if(localStorage.getItem(`${ctxDt.user}_isSubmitted`) != null){
+    nav(`/submit/${ctxDt.examCode}`);
+  }
+
   useEffect(() => {
     let id = param.id;
 
@@ -63,6 +67,12 @@ export default function QuizScreen() {
     nav(`/submit/${ctxDt.examCode}`);
   };
 
+  function SubmitButton() {
+    return(
+      <button className='dark' onClick={submithandle()}>Submit</button>
+    )
+  }
+
   return (
     <div className="content">
       <Timer user={ctxDt.user} />
@@ -81,7 +91,7 @@ export default function QuizScreen() {
           <button onClick={goToPreviousQuiz}>Back</button>
         )}
         {state > 0 && qNo >= Object.keys(data.lsQuizz).length ? (
-          <button className='dark' onClick={submithandle()}>Submit</button>
+          <SubmitButton/>
         ) : (
           <button onClick={goToNextQuiz}>Next</button>
         )}

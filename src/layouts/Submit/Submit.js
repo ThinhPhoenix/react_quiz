@@ -4,11 +4,14 @@ import { ctx } from "../../CtxData";
 import "./Submit.scss";
 
 export default function Submit() {
-  let score = 0
+  let debug = true;
+  let score = 0;
   const nav = useNavigate();
   const ctxDt = useContext(ctx);
   const userExamKey = `${ctxDt.user}_${ctxDt.examCode}`;
   const lsQuizId = Object.keys(ctxDt.Quiz.lsQuizz);
+
+  localStorage.setItem(`${ctxDt.user}_isSubmitted`, `true`);
 
   // Retrieve the time remaining from local storage
   const storedTimeRemaining = localStorage.getItem(
@@ -53,34 +56,30 @@ export default function Submit() {
         with {score} <code>points</code>
       </div>
       <button onClick={() => nav("/")}>Back to main</button>
-      <div>
-        Debugging:
-        {Object.keys(allQuizData).map((quizId) => (
-          <div key={quizId}>
-            Exam ID: {ctxDt.examCode}
-            {allQuizData[quizId] ? (
-              <div>
-                {`${allQuizData[quizId].user}`}'s Choices:
-                {Object.keys(allQuizData[quizId].lsAns).map((quizId) => (
-                  <div key={quizId}>
-                    Quiz ID: {quizId} <br />
-                    Choices:{" "}
-                    {allQuizData[quizId].lsAns[quizId].choice.join(", ")}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div>
-                {`${ctxDt.user}`}'s Choices:
+      {debug && (
+        <div>
+          Debugging: <br />
+          Exam ID: {ctxDt.examCode} <br />
+          {`${ctxDt.user}'s selected answers: `}
+          {Object.keys(allQuizData).map((quizId) => (
+            <div key={quizId}>
+              {allQuizData[quizId] ? (
                 <div>
-                  Quiz ID: None (Because you didn't do anything.) <br/>
-                  Choices: None (Because you didn't do anything.)
+                  {Object.keys(allQuizData[quizId].lsAns).map((quizId) => (
+                    <div key={quizId}>
+                      Quiz ID: {quizId} <br />
+                      Choices:{" "}
+                      {allQuizData[quizId].lsAns[quizId].choice.join(", ")}
+                    </div>
+                  ))}
                 </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+              ) : (
+                <div>{/* /Blank */}</div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
