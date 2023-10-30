@@ -9,7 +9,7 @@ export default function Submit() {
   const nav = useNavigate();
   const ctxDt = useContext(ctx);
   const userExamKey = `${ctxDt.user}_${ctxDt.examCode}`;
-  const lsQuizId = Object.keys(ctxDt.Quiz.lsQuizz);
+  const lsQuizId = ctxDt.Quiz.lsQuizz ? Object.keys(ctxDt.Quiz.lsQuizz) : [];
 
   localStorage.setItem(`${ctxDt.user}_isSubmitted`, `true`);
 
