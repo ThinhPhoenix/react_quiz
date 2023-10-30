@@ -11,8 +11,6 @@ export default function Submit() {
   const userExamKey = `${ctxDt.user}_${ctxDt.examCode}`;
   const lsQuizId = ctxDt.Quiz.lsQuizz ? Object.keys(ctxDt.Quiz.lsQuizz) : [];
 
-  localStorage.setItem(`${ctxDt.user}_isSubmitted_${ctxDt.examCode}`, "true");
-
   // Retrieve the time remaining from local storage
   const storedTimeRemaining = localStorage.getItem(
     `${ctxDt.user}_timeRemaining_${ctxDt.examCode}`
@@ -63,8 +61,25 @@ export default function Submit() {
       .then((dt) => {
         console.log(dt);
         setScore(dt);
+        
+        // Save the score to local storage
+        localStorage.setItem(
+          `${ctxDt.user}_${ctxDt.examCode}_score`,
+          JSON.stringify(dt)
+        );
       });
   }, []);
+
+  // Retrieve the score from local storage (if it exists)
+  useEffect(() => {
+    const storedScore = localStorage.getItem(
+      `${ctxDt.user}_${ctxDt.examCode}_score`
+    );
+
+    if (storedScore) {
+      setScore(JSON.parse(storedScore));
+    }
+  }, [ctxDt.user, ctxDt.examCode]);
 
   console.log("Score:", score);
 
