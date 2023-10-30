@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ctx } from "../../CtxData";
 import "./Submit.scss";
@@ -22,7 +22,7 @@ function convertDataToNewFormat(savedData) {
 
 export default function Submit() {
   let debug = true;
-  let score = 0;
+  const [score,setScore] = useState()
   const nav = useNavigate();
   const ctxDt = useContext(ctx);
   const userExamKey = `${ctxDt.user}_${ctxDt.examCode}`;
@@ -76,6 +76,7 @@ export default function Submit() {
     .then((res) => res.json())
     .then((dt) => {
       console.log(dt);
+      setScore(dt)
     });
   }, []);
   
