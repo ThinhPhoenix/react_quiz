@@ -52,17 +52,6 @@ export default function Submit() {
   });
 
   useEffect(() => {
-    let data = [
-      {
-        "quesId": "48c9945c-c048-4cdc-99c3-249c4a320386",
-        "answerId": "e59a4d41-19f8-44b5-aa42-92058fb6cee9"
-      },
-      {
-        "quesId": "46229c41-b896-493b-b32b-d890115efc3e",
-        "answerId": "c3fd23b1-527f-4fde-9750-ec9eb8164330"
-      }
-    ];
-    
     const convertedData = convertDataToNewFormat(allQuizData);
     
     fetch("https://server.nglearns.com/answer/285498f5-3486-434d-a459-bedb6bcea7ce", {
