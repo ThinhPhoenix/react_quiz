@@ -21,8 +21,13 @@ export default function Submit() {
   lsQuizId.forEach((quizId) => {
     const quizDataKey = `${userExamKey}_${quizId}`;
     const quizDataJSON = localStorage.getItem(quizDataKey);
-    const quizData = JSON.parse(quizDataJSON);
-    allQuizData[quizId] = quizData;
+
+    if (quizDataJSON) {
+      const quizData = JSON.parse(quizDataJSON);
+      allQuizData[quizId] = quizData;
+    } else {
+      allQuizData[quizId] = null;
+    }
   });
 
   // Debugging: Check the content of allQuizData
@@ -52,16 +57,19 @@ export default function Submit() {
         {Object.keys(allQuizData).map((quizId) => (
           <div key={quizId}>
             Quiz ID: {quizId}
-            {allQuizData[quizId].lsAns && (
+            {allQuizData[quizId] ? (
               <div>
                 {`${allQuizData[quizId].user}`}'s Choices:
                 {Object.keys(allQuizData[quizId].lsAns).map((quizId) => (
                   <div key={quizId}>
-                    Quiz ID: {quizId} <br/>
-                    Choices: {allQuizData[quizId].lsAns[quizId].choice.join(", ")}
+                    Quiz ID: {quizId} <br />
+                    Choices:{" "}
+                    {allQuizData[quizId].lsAns[quizId].choice.join(", ")}
                   </div>
                 ))}
               </div>
+            ) : (
+              <div>Choices: None</div>
             )}
           </div>
         ))}
