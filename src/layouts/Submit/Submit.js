@@ -22,7 +22,7 @@ function convertDataToNewFormat(savedData) {
 
 export default function Submit() {
   let debug = true;
-  const [score,setScore] = useState()
+  const [score,setScore] = useState(0)
   const nav = useNavigate();
   const ctxDt = useContext(ctx);
   const userExamKey = `${ctxDt.user}_${ctxDt.examCode}`;
