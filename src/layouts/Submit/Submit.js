@@ -4,6 +4,7 @@ import { ctx } from "../../CtxData";
 import "./Submit.scss";
 
 export default function Submit() {
+  let score = 0
   const nav = useNavigate();
   const ctxDt = useContext(ctx);
   const userExamKey = `${ctxDt.user}_${ctxDt.examCode}`;
@@ -49,7 +50,7 @@ export default function Submit() {
       <div className="wrapper submit">
         You finished in{" "}
         {`${timeTakenMinutes} minutes ${timeTakenSecondsRemaining} seconds`}{" "}
-        with {100} <code>points</code>
+        with {score} <code>points</code>
       </div>
       <button onClick={() => nav("/")}>Back to main</button>
       <div>
