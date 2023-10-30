@@ -57,7 +57,7 @@ export default function Submit() {
         Debugging:
         {Object.keys(allQuizData).map((quizId) => (
           <div key={quizId}>
-            Quiz ID: {quizId}
+            Exam ID: {ctxDt.examCode}
             {allQuizData[quizId] ? (
               <div>
                 {`${allQuizData[quizId].user}`}'s Choices:
@@ -70,7 +70,13 @@ export default function Submit() {
                 ))}
               </div>
             ) : (
-              <div>Choices: None</div>
+              <div>
+                {`${ctxDt.user}`}'s Choices:
+                <div>
+                  Quiz ID: None (Because you didn't do anything.) <br/>
+                  Choices: None (Because you didn't do anything.)
+                </div>
+              </div>
             )}
           </div>
         ))}
