@@ -66,7 +66,7 @@ export default function QuizScreen() {
   return (
     <div className="content">
       <Timer user={ctxDt.user} />
-      <div>
+      <div className="title">
         {ctxDt.user} joined {ctxDt.Quiz.title}
       </div>
       {state > 0 ? (
