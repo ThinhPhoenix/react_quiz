@@ -60,19 +60,22 @@ export default function Submit() {
       .then((res) => res.json())
       .then((dt) => {
         console.log(dt);
-        setScore(dt);
-        
-        // Save the score to local storage
-        localStorage.setItem(
-          `${ctxDt.user}_${ctxDt.examCode}_score`,
-          JSON.stringify(dt)
-        );
+
+        // Check if the score has been saved previously
+        const scoreKey = `${ctxDt.user}_${ctxDt.examCode}_score`;
+        const hasSavedScore = localStorage.getItem(scoreKey) === "true";
+
+        if (!hasSavedScore) {
+          setScore(dt);
+          // Save the score to local storage
+          // Save the score to local storage
+          localStorage.setItem(scoreKey, dt);
+        }
       });
   }, []);
 
   // Retrieve the score from local storage (if it exists)
   useEffect(() => {
-    localStorage.setItem(`${ctxDt.user}_isSubmitted_${ctxDt.examCode}`,true)
     const storedScore = localStorage.getItem(
       `${ctxDt.user}_${ctxDt.examCode}_score`
     );
@@ -98,7 +101,7 @@ export default function Submit() {
       <div className="wrapper submit">
         You finished in{" "}
         {`${timeTakenMinutes} minutes ${timeTakenSecondsRemaining} seconds`}{" "}
-        with {score} <code>points</code>
+        with {localStorage.getItem(`${ctxDt.user}_${ctxDt.examCode}_score`)} <code>points</code>
       </div>
       <button onClick={() => nav("/")}>Back to main</button>
       {debug && (
