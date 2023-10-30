@@ -7,11 +7,8 @@ export default function Submit() {
   const nav = useNavigate();
   const ctxDt = useContext(ctx);
 
-  // Get the current time
-  const currentTime = new Date();
-
   // Retrieve the time remaining from local storage
-  const storedTimeRemaining = localStorage.getItem(`${ctxDt.user}_timeRemaining`);
+  const storedTimeRemaining = localStorage.getItem(`${ctxDt.user}_timeRemaining_${ctxDt.examCode}`);
 
   // Convert the stored time remaining (in seconds) to a number
   const storedTimeRemainingInSeconds = parseInt(storedTimeRemaining, 10);

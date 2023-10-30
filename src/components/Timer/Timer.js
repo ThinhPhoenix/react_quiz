@@ -5,7 +5,7 @@ import { ctx } from '../../CtxData';
 export default function Timer({ user }) {
     const nav = useNavigate();
     const ctxDt = useContext(ctx);
-    const localStorageKey = `${user}_timeRemaining`; // Unique key for each user
+    const localStorageKey = `${user}_timeRemaining_${ctxDt.examCode}`; // Unique key for each user
     const [timeRemaining, setTimeRemaining] = useState(60 * 60); // 60 minutes in seconds
     const [timerExpired, setTimerExpired] = useState(false);
 
