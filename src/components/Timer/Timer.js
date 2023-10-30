@@ -30,12 +30,10 @@ export default function Timer({ user }) {
         }
     }, [timeRemaining]);
 
-    // Listen for timer expiration and save expiration state in local storage
+    // Watch for changes in the timerRemaining state and update local storage
     useEffect(() => {
-        if (timerExpired) {
-            localStorage.setItem(localStorageKey, '0');
-        }
-    }, [timerExpired, localStorageKey]);
+        localStorage.setItem(localStorageKey, timeRemaining.toString());
+    }, [timeRemaining, localStorageKey]);
 
     const minutes = Math.floor(timeRemaining / 60);
     const seconds = timeRemaining % 60;
