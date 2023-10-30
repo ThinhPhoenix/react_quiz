@@ -72,6 +72,7 @@ export default function Submit() {
 
   // Retrieve the score from local storage (if it exists)
   useEffect(() => {
+    localStorage.setItem(`${ctxDt.user}_isSubmitted_${ctxDt.examCode}`,true)
     const storedScore = localStorage.getItem(
       `${ctxDt.user}_${ctxDt.examCode}_score`
     );
