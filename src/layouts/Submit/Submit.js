@@ -3,6 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { ctx } from "../../CtxData";
 import "./Submit.scss";
 
+function convertDataToNewFormat(savedData) {
+  const convertedData = [];
+
+  for (const quizId in savedData.lsAns) {
+    const choices = savedData.lsAns[quizId].choice;
+    choices.forEach((answerId) => {
+      convertedData.push({
+        quesId: quizId,
+        answerId,
+      });
+    }); // Add the missing closing parenthesis here
+  }
+
+  return convertedData;
+}
+
+
 export default function Submit() {
   let debug = true;
   let score = 0;
@@ -34,10 +51,36 @@ export default function Submit() {
     }
   });
 
-  // Debugging: Check the content of allQuizData
   useEffect(() => {
-    console.log("allQuizData:", allQuizData);
-  }, [allQuizData]);
+    let data = [
+      {
+        "quesId": "48c9945c-c048-4cdc-99c3-249c4a320386",
+        "answerId": "e59a4d41-19f8-44b5-aa42-92058fb6cee9"
+      },
+      {
+        "quesId": "46229c41-b896-493b-b32b-d890115efc3e",
+        "answerId": "c3fd23b1-527f-4fde-9750-ec9eb8164330"
+      }
+    ];
+    
+    const convertedData = convertDataToNewFormat(allQuizData);
+    
+    fetch("https://server.nglearns.com/answer/285498f5-3486-434d-a459-bedb6bcea7ce", {
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: "POST",
+      body: JSON.stringify(convertedData)
+    })
+    .then((res) => res.json())
+    .then((dt) => {
+      console.log(dt);
+    });
+  }, []);
+  
+
+  console.log("allQuizData:", allQuizData);
 
   // Convert the stored time remaining (in seconds) to a number
   const storedTimeRemainingInSeconds = parseInt(storedTimeRemaining, 10);
