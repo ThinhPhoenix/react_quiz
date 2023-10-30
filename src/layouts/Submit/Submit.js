@@ -17,6 +17,7 @@ export default function Submit() {
   );
 
   useEffect(() => {
+    localStorage.setItem(`${ctxDt.user}_isSubmitted_${ctxDt.examCode}`,true)
     // Function to retrieve data for a quiz from local storage
     const retrieveQuizData = (quizId) => {
       const quizDataKey = `${userExamKey}_${quizId}`;
