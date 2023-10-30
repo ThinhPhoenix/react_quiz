@@ -6,7 +6,7 @@ export default function Timer({ user }) {
     const nav = useNavigate();
     const ctxDt = useContext(ctx);
     const localStorageKey = `${user}_timeRemaining_${ctxDt.examCode}`; // Unique key for each user
-    const [timeRemaining, setTimeRemaining] = useState(60 * 60); // 60 minutes in seconds
+    const [timeRemaining, setTimeRemaining] = useState(0.2 * 60); // 12 minutes in seconds
     const [timerExpired, setTimerExpired] = useState(false);
 
     // Load time remaining from local storage
@@ -24,14 +24,18 @@ export default function Timer({ user }) {
                 setTimeRemaining((prevTime) => prevTime - 1);
             }, 1000);
 
-            // Save time remaining in local storage
-            localStorage.setItem(localStorageKey, timeRemaining.toString());
-
             return () => clearInterval(timerInterval);
         } else {
             setTimerExpired(true);
         }
-    }, [timeRemaining, localStorageKey]);
+    }, [timeRemaining]);
+
+    // Listen for timer expiration and save expiration state in local storage
+    useEffect(() => {
+        if (timerExpired) {
+            localStorage.setItem(localStorageKey, '0');
+        }
+    }, [timerExpired, localStorageKey]);
 
     const minutes = Math.floor(timeRemaining / 60);
     const seconds = timeRemaining % 60;
