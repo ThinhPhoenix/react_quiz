@@ -17,7 +17,7 @@ export default function Home() {
   }, []);
 
   const joinQuiz = () => {
-    if(localStorage.getItem(`${username}_isSubmitted`)!=null){
+    if(localStorage.getItem(`${username}_isSubmitted_${examCode}`)!=null){
       ctxDt.SetExamCode(examCode)
       ctxDt.SetUser(username)
       nav(`/submit/${examCode}`);

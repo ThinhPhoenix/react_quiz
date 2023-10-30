@@ -11,7 +11,7 @@ export default function Submit() {
   const userExamKey = `${ctxDt.user}_${ctxDt.examCode}`;
   const lsQuizId = ctxDt.Quiz.lsQuizz ? Object.keys(ctxDt.Quiz.lsQuizz) : [];
 
-  localStorage.setItem(`${ctxDt.user}_isSubmitted`, `true`);
+  localStorage.setItem(`${ctxDt.user}_isSubmitted_${ctxDt.examCode}`, `true`);
 
   // Retrieve the time remaining from local storage
   const storedTimeRemaining = localStorage.getItem(

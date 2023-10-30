@@ -16,7 +16,7 @@ export default function QuizScreen() {
   const [quizKey, setquizKey] = useState([]);
   const [qNo, setQNo] = useState(1);
 
-  if(localStorage.getItem(`${ctxDt.user}_isSubmitted`) != null){
+  if(localStorage.getItem(`${ctxDt.user}_isSubmitted_${ctxDt.examCode}`) != null){
     nav(`/submit/${ctxDt.examCode}`);
   }
 
